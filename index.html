@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stellar Love - A Message from the Stars</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#7311d4",
+        "background-light": "#f7f6f8",
+        "background-dark": "#191022",
+      },
+      fontFamily: {
+        display: ["Plus Jakarta Sans", "sans-serif"]
+      },
+      borderRadius: {
+        DEFAULT: "1rem",
+        lg: "2rem",
+        xl: "3rem",
+        full: "9999px"
+      },
+    },
+  },
+}
+</script>
+
+<style>
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.nebula-bg {
+  background: radial-gradient(circle at center, #2e1065 0%, #191022 100%);
+  position: relative;
+  overflow: hidden;
+}
+.nebula-overlay {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 80px 120px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 110px 210px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 150px 150px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.3;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-white">
+
+<div class="relative flex min-h-screen w-full flex-col nebula-bg overflow-x-hidden">
+<div class="nebula-overlay"></div>
+
+<!-- Decorative Nebula Clouds -->
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/20 blur-[120px] pointer-events-none"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-900/20 blur-[100px] pointer-events-none"></div>
+
+<div class="layout-container flex h-full grow flex-col z-10">
+
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-white/10 px-6 md:px-10 py-4">
+  <div class="flex items-center gap-4">
+    <div class="size-8 text-primary">
+      <span class="material-symbols-outlined text-3xl">auto_awesome</span>
+    </div>
+    <h2 class="text-white text-xl font-bold tracking-tight">T-loves-T</h2>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12 text-center">
+<div class="max-w-2xl w-full flex flex-col items-center gap-12">
+
+<div class="space-y-4">
+  <h1 class="text-white text-4xl md:text-6xl font-extrabold">
+    A message from <br/> a heart yk...
+  </h1>
+</div>
+
+<!-- Envelope -->
+<div class="relative group cursor-pointer">
+  <div class="absolute -inset-4 bg-primary/30 rounded-xl blur-2xl transition-all"></div>
+
+  <div class="relative w-64 h-48 md:w-80 md:h-56 bg-[#2a1a3a] rounded-xl border border-white/20 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-105 transition-transform">
+    <div class="absolute top-0 left-0 w-full h-1/2 bg-[#362348]"
+         style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+
+    <div class="z-20 w-16 h-16 bg-primary rounded-full flex items-center justify-center border-4 border-[#2a1a3a]">
+      <span class="material-symbols-outlined text-white text-3xl">favorite</span>
+    </div>
+
+    <div class="absolute bottom-4 text-white/30 text-xs italic tracking-widest">
+      FOR MY UNIVERSE
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="flex flex-col items-center gap-6">
+  <button class="group flex min-w-[240px] h-16 px-8 items-center justify-center rounded-full bg-primary text-white gap-3 text-lg font-bold hover:shadow-[0_0_30px_rgba(115,17,212,0.6)]">
+    <span class="material-symbols-outlined text-2xl">auto_stories</span>
+    <span>Open this bbygirl</span>
+  </button>
+
+  <p class="text-sm opacity-60 tracking-wide">*my bbygirl </p>
+</div>
+
+</div>
+</main>
+
+<!-- Footer -->
+<footer class="px-10 py-8 border-t border-white/5 text-center text-white/40 text-xs tracking-widest">
+  Infinite Love © • Made with ❤️ ,only for you Tina
+</footer>
+
+</div>
+</div>
+
+<script>
+const openTargets = document.querySelectorAll(".group.cursor-pointer, button");
+openTargets.forEach(el => {
+  el.addEventListener("click", () => {
+    window.location.href = "letter.html";
+  });
+});
+</script>
+<audio id="bgMusic" src="love.mp3" autoplay loop></audio>
+
+<script>
+const music = document.getElementById("bgMusic");
+
+/* 🔁 Restore playback position */
+const savedTime = localStorage.getItem("musicTime");
+if (savedTime) {
+  music.currentTime = parseFloat(savedTime);
+}
+
+/* 🔊 Default volume (100%) */
+music.volume = 1.0;
+
+/* 🎉 Celebration page → fade down to 20% */
+if (window.location.pathname.includes("celebrate")) {
+  let currentVolume = music.volume;
+
+  const fadeDown = setInterval(() => {
+    if (currentVolume > 0.2) {
+      currentVolume -= 0.02;
+      music.volume = Math.max(currentVolume, 0.2);
+    } else {
+      music.volume = 0.2;
+      clearInterval(fadeDown);
+    }
+  }, 100);
+}
+
+/* 💾 Save playback time continuously */
+setInterval(() => {
+  if (!music.paused) {
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}, 500);
+
+/* 🔓 Autoplay unlock (required by browsers) */
+document.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+  }
+}, { once: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Valentine Proposal</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#7311d4",
+        "background-light": "#f7f6f8",
+        "background-dark": "#191022",
+      },
+      fontFamily: {
+        display: ["Plus Jakarta Sans", "sans-serif"],
+        "serif-elegant": ["Playfair Display", "serif"]
+      },
+      borderRadius: {
+        DEFAULT: "1rem",
+        lg: "2rem",
+        xl: "3rem",
+        full: "9999px"
+      },
+    },
+  },
+}
+</script>
+
+<style>
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.galaxy-bg {
+  background: radial-gradient(circle at 50% 50%, #2a0552 0%, #191022 100%);
+}
+.glow-text {
+  text-shadow: 0 0 20px rgba(115, 17, 212, 0.6),
+               0 0 40px rgba(115, 17, 212, 0.4);
+}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display overflow-hidden">
+
+<!-- Background -->
+<div class="fixed inset-0 galaxy-bg pointer-events-none z-0">
+  <div class="absolute top-10 left-[15%] w-1 h-1 bg-white rounded-full opacity-60"></div>
+  <div class="absolute top-40 left-[45%] w-1.5 h-1.5 bg-white rounded-full opacity-40"></div>
+  <div class="absolute top-20 right-[20%] w-1 h-1 bg-white rounded-full opacity-70"></div>
+  <div class="absolute bottom-60 left-[10%] w-2 h-2 bg-primary/30 rounded-full blur-sm"></div>
+  <div class="absolute top-[70%] right-[30%] w-1 h-1 bg-white rounded-full opacity-50"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]"></div>
+</div>
+
+<div class="relative z-10 flex h-screen w-full flex-col items-center justify-center px-4">
+
+<!-- Main Content -->
+<main class="flex flex-col items-center justify-center text-center space-y-12">
+
+<!-- Icon -->
+<div class="relative">
+  <div class="absolute inset-0 bg-primary blur-3xl opacity-30 scale-150"></div>
+  <span class="material-symbols-outlined text-primary text-8xl relative z-10">favorite</span>
+</div>
+
+<!-- Headline -->
+<div class="space-y-4">
+  <h1 class="text-white font-serif-elegant text-5xl md:text-7xl glow-text italic">
+    Will you be my valentine darling?
+  </h1>
+  <p class="text-[#ad92c9] text-lg font-light tracking-widest uppercase">
+    Across every galaxy, it's always been you
+  </p>
+</div>
+
+<!-- Buttons -->
+<div class="relative h-32 flex items-center justify-center gap-6 mt-12">
+
+<!-- YES -->
+<button
+  id="yesBtn"
+  class="group relative flex min-w-[180px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-16 px-8 bg-primary text-white text-xl font-bold transition-all hover:scale-110 hover:shadow-[0_0_30px_rgba(115,17,212,0.6)] active:scale-95 z-20">
+  YES
+  <span class="material-symbols-outlined text-2xl ml-2 group-hover:animate-pulse">favorite</span>
+</button>
+
+<!-- NO -->
+<button
+  id="noBtn"
+  class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-full h-12 px-6 bg-[#362348]/60 backdrop-blur-md border border-white/10 text-white/60 text-base font-medium transition-all">
+  No
+</button>
+
+</div>
+</main>
+</div>
+
+<!-- JS -->
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+yesBtn.addEventListener("click", () => {
+  window.location.href = "yes.html";
+});
+
+// NO button dodges cursor (no UI changes)
+document.addEventListener("mousemove", (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const distX = e.clientX - (rect.left + rect.width / 2);
+  const distY = e.clientY - (rect.top + rect.height / 2);
+  const distance = Math.sqrt(distX * distX + distY * distY);
+
+  if (distance < 120) {
+    const offsetX = (Math.random() - 0.5) * 300;
+    const offsetY = (Math.random() - 0.5) * 300;
+
+    noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+  }
+});
+</script>
+<audio id="bgMusic" src="love.mp3" autoplay loop></audio>
+
+<script>
+const music = document.getElementById("bgMusic");
+
+/* 🔁 Restore playback position */
+const savedTime = localStorage.getItem("musicTime");
+if (savedTime) {
+  music.currentTime = parseFloat(savedTime);
+}
+
+/* 🔊 Default volume (100%) */
+music.volume = 1.0;
+
+/* 🎉 Celebration page → fade down to 20% */
+if (window.location.pathname.includes("celebrate")) {
+  let currentVolume = music.volume;
+
+  const fadeDown = setInterval(() => {
+    if (currentVolume > 0.2) {
+      currentVolume -= 0.02;
+      music.volume = Math.max(currentVolume, 0.2);
+    } else {
+      music.volume = 0.2;
+      clearInterval(fadeDown);
+    }
+  }, 100);
+}
+
+/* 💾 Save playback time continuously */
+setInterval(() => {
+  if (!music.paused) {
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}, 500);
+
+/* 🔓 Autoplay unlock (required by browsers) */
+document.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+  }
+}, { once: true });
+</script>
+</body>
+</html>
