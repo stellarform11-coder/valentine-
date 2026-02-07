@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Celebration</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,1&display=swap" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#7311d4",
+        gold: "#ffd700",
+        dark: "#0a0510"
+      },
+      fontFamily: {
+        display: ["Plus Jakarta Sans", "sans-serif"]
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* 🎊 Confetti */
+.confetti {
+  position: fixed;
+  top: -10px;
+  pointer-events: none;
+  animation: fall linear forwards;
+  opacity: 0.9;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* 💥 Heart Explosion */
+.heart {
+  position: fixed;
+  font-size: 26px;
+  pointer-events: none;
+  animation: explode 1.8s ease-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(1.4);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body class="bg-dark text-white overflow-hidden">
+
+<!-- 🌌 Background -->
+<div class="fixed inset-0 bg-[radial-gradient(circle_at_center,#2a0552_0%,#0a0510_70%)]"></div>
+
+<!-- 💜 Main -->
+<div class="relative z-10 flex min-h-screen flex-col items-center justify-center text-center px-6">
+
+<h1 class="text-6xl md:text-7xl font-extrabold drop-shadow-[0_0_20px_rgba(115,17,212,0.8)]">
+  I love you 💜
+</h1>
+
+<p class="mt-4 text-white/70 tracking-widest uppercase">
+  Forever & Always
+</p>
+
+<!-- 🎬 VIDEO -->
+<div class="mt-12 w-full max-w-3xl aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
+  <video
+    id="loveVideo"
+    class="w-full h-full object-cover"
+    src="love.mp4"
+    controls
+    playsinline>
+  </video>
+</div>
+
+<!-- 🔙 Home -->
+<button
+  id="homeBtn"
+  class="mt-12 px-10 py-4 rounded-full bg-white/10 hover:bg-white/20 transition-all font-bold tracking-wide border border-white/20">
+  Back to Start
+</button>
+
+</div>
+
+<!-- 🔊 MUTE BUTTON -->
+<button id="muteBtn"
+  class="fixed bottom-6 right-6 z-50 bg-white/10 backdrop-blur-md
+         border border-white/20 px-4 py-3 rounded-full
+         text-white text-sm font-semibold shadow-lg">
+  🔊 Mute music
+</button>
+
+<!-- 🎉 CELEBRATION EFFECTS -->
+<script>
+function launchConfetti(count = 120) {
+  const colors = ["#7311d4", "#ffd700", "#ffffff"];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("div");
+    el.className = "confetti";
+    const size = Math.random() * 8 + 6;
+    el.style.width = size + "px";
+    el.style.height = size + "px";
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.borderRadius = Math.random() > 0.6 ? "50%" : "2px";
+    el.style.animationDuration = Math.random() * 2 + 3 + "s";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+  }
+}
+
+function heartExplosion(x, y, count = 30) {
+  for (let i = 0; i < count; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤";
+    heart.style.left = x + "px";
+    heart.style.top = y + "px";
+    heart.style.color = Math.random() > 0.5 ? "#7311d4" : "#ffd700";
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 220 + 60;
+    heart.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+    heart.style.setProperty("--y", `${Math.sin(angle) * distance}px`);
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
+}
+
+window.addEventListener("load", () => {
+  launchConfetti(150);
+  heartExplosion(window.innerWidth / 2, window.innerHeight / 2);
+  setTimeout(() => launchConfetti(80), 800);
+});
+</script>
+
+<!-- 🎵 BACKGROUND MUSIC -->
+<audio id="bgMusic" src="love.mp3" loop></audio>
+
+<script>
+const music = document.getElementById("bgMusic");
+
+/* 🔓 Start music on first interaction (browser rule) */
+document.addEventListener("click", () => {
+  if (!localStorage.getItem("musicStarted")) {
+    music.play();
+    localStorage.setItem("musicStarted", "true");
+  }
+}, { once: true });
+
+/* 🔁 Restore time */
+const savedTime = localStorage.getItem("musicTime");
+if (savedTime) music.currentTime = parseFloat(savedTime);
+
+/* 🔊 Start full volume */
+music.volume = 1;
+
+/* 🎉 FAST fade down to 20% on this page */
+let v = 1;
+const fade = setInterval(() => {
+  v -= 0.08;
+  music.volume = Math.max(v, 0.2);
+  if (v <= 0.2) clearInterval(fade);
+}, 60);
+
+/* 💾 Save time */
+setInterval(() => {
+  if (!music.paused) {
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}, 400);
+
+/* 🔇 MUTE BUTTON */
+const muteBtn = document.getElementById("muteBtn");
+let muted = false;
+
+muteBtn.addEventListener("click", () => {
+  muted = !muted;
+  if (muted) {
+    music.volume = 0;
+    muteBtn.textContent = "🔇 Unmute music";
+  } else {
+    music.volume = 0.2;
+    muteBtn.textContent = "🔊 Mute music";
+  }
+});
+
+/* 🔙 Back home */
+document.getElementById("homeBtn").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
